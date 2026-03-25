@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday My Love</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:Poppins;
+overflow:hidden;
+}
+
+/* PAGE 1 */
+#page1{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+background:linear-gradient(45deg,red,blue);
+color:white;
+}
+
+#welcome{
+font-size:40px;
+text-shadow:0 0 10px pink,0 0 20px pink;
+}
+
+#enterBtn{
+margin-top:40px;
+padding:15px 40px;
+font-size:18px;
+background:pink;
+border:none;
+border-radius:30px;
+cursor:pointer;
+}
+
+/* PAGE 2 */
+#page2{
+display:none;
+height:100vh;
+width:100%;
+position:relative;
+overflow:hidden;
+
+background:
+linear-gradient(120deg,#ffb6d9,#ff7ac6,#ff9fe0),
+radial-gradient(circle at 20% 20%,rgba(255,255,255,0.4),transparent 40%),
+radial-gradient(circle at 80% 30%,rgba(255,255,255,0.3),transparent 40%),
+radial-gradient(circle at 40% 80%,rgba(255,255,255,0.4),transparent 40%);
+background-blend-mode:overlay;
+}
+
+/* BIRTHDAY TEXT */
+#birthdayText{
+position:absolute;
+top:40%;
+left:50%;
+transform:translate(-50%,-50%);
+font-size:60px;
+font-family:Pacifico;
+color:red;
+text-shadow:0 0 12px lightblue;
+z-index:2;
+text-align:center;
+}
+
+/* BOOK ICON */
+#bookIcon{
+position:absolute;
+top:20px;
+right:20px;
+font-size:42px;
+cursor:pointer;
+z-index:3;
+}
+
+/* BOOK */
+#book{
+position:absolute;
+top:80px;
+right:20px;
+width:270px;
+height:340px;
+background:white;
+border-radius:12px;
+padding:15px;
+overflow:auto;
+box-shadow:0 0 20px rgba(0,0,0,0.6);
+display:none;
+z-index:3;
+}
+
+#bookText{
+font-size:14px;
+line-height:1.6;
+}
+
+/* EMOJI RAIN */
+.emoji{
+position:absolute;
+top:-50px;
+font-size:26px;
+opacity:0.7;
+animation:fall linear infinite;
+z-index:1;
+}
+
+@keyframes fall{
+0%{transform:translateY(-50px);}
+100%{transform:translateY(110vh);}
+}
+
+/* CONFETTI */
+.confetti{
+position:absolute;
+width:10px;
+height:10px;
+top:-10px;
+animation:confettiFall linear infinite;
+}
+
+@keyframes confettiFall{
+0%{transform:translateY(-10px) rotate(0deg);}
+100%{transform:translateY(110vh) rotate(360deg);}
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="page1">
+<h1 id="welcome"></h1>
+<button id="enterBtn">Click To Enter</button>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2">
+<div id="bookIcon">📖</div>
+
+<div id="book">
+<div id="bookText"></div>
+</div>
+
+<h1 id="birthdayText"></h1>
+</div>
+
+<audio id="song" autoplay loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6c8a4b1b7a.mp3?filename=happy-birthday-to-you-122336.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* WELCOME TYPING */
+let text="Welcome Sanuli";
+let i=0;
+function typeWelcome(){
+if(i<text.length){
+document.getElementById("welcome").innerHTML+=text.charAt(i);
+i++;
+setTimeout(typeWelcome,100);
+}
+}
+typeWelcome();
+
+/* ENTER BUTTON */
+document.getElementById("enterBtn").onclick=function(){
+document.getElementById("page1").style.display="none";
+document.getElementById("page2").style.display="block";
+
+document.getElementById("song").play().catch(()=>{});
+
+startBirthdayTyping();
+emojiRain();
+confettiRain();
+}
+
+/* BIRTHDAY TEXT */
+let btext="Happy Birthday My Love ❤️";
+let j=0;
+function startBirthdayTyping(){
+function type(){
+if(j<btext.length){
+document.getElementById("birthdayText").innerHTML+=btext.charAt(j);
+j++;
+setTimeout(type,120);
+}
+}
+type();
+}
+
+/* EMOJI RAIN */
+let emojis=["❤️","🫂","😘","🎂","🍰","🤍"];
+function emojiRain(){
+setInterval(function(){
+let emoji=document.createElement("div");
+emoji.classList.add("emoji");
+emoji.innerHTML=emojis[Math.floor(Math.random()*emojis.length)];
+emoji.style.left=Math.random()*100+"vw";
+emoji.style.animationDuration=(3+Math.random()*5)+"s";
+document.body.appendChild(emoji);
+setTimeout(()=>emoji.remove(),8000);
+},300);
+}
+
+/* CONFETTI */
+function confettiRain(){
+setInterval(function(){
+let c=document.createElement("div");
+c.classList.add("confetti");
+c.style.left=Math.random()*100+"vw";
+c.style.backgroundColor="hsl("+Math.random()*360+"deg,100%,50%)";
+c.style.animationDuration=(3+Math.random()*3)+"s";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),6000);
+},150);
+}
+
+/* BOOK OPEN */
+document.getElementById("bookIcon").onclick=function(){
+let book=document.getElementById("book");
+if(book.style.display==="none"){
+book.style.display="block";
+bookTyping();
+}else{
+book.style.display="none";
+}
+}
+
+/* BOOK MESSAGE */
+let message=`🎂 Happy Birthday My Love ❤️ (26.03.2011)
+
+You are the most beautiful gift in my life 💖, and honestly the best thing that ever happened to me.
+
+I never thought I’d find someone like you, but now I can’t imagine my life without you 🤍. Every moment with you feels so special and means everything to me.
+
+Your smile, your kindness, everything about you makes me so happy 😊✨
+
+I just want you to stay happy always, keep smiling, and never change the amazing person you are 💫
+
+I wish all your dreams come true, and I’ll always be right here with you, supporting you no matter what ❤️
+
+I love you so much ❤️  
+Forever with you 😘`;
+
+let k=0;
+function bookTyping(){
+function type(){
+if(k<message.length){
+document.getElementById("bookText").innerHTML+=message.charAt(k);
+k++;
+setTimeout(type,35);
+}
+}
+type();
+}
+
+</script>
+
+</body>
+</html>
